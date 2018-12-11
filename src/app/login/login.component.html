@@ -1,0 +1,67 @@
+<!--================Home Banner Area =================-->
+<section class="banner_area">
+    <div class="banner_inner d-flex align-items-center">
+        <div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0"
+             data-background=""></div>
+        <div class="container">
+            <div class="banner_content text-center">
+                <div class="page_link">
+                    <a routerLink="/home">Home</a>
+                    <a routerLink="/login">Login</a>
+                </div>
+                <h2>LOGIN</h2>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Home Banner Area =================-->
+
+<!--================Welcome Area =================-->
+<section class="welcome_area py-5">
+    <div class="container">
+        <div class="welcome_inner row">
+            <div class="col-lg-5">
+                <div class="welcome_img">
+                    <img class="img-fluid" src="../../assets/theme/img/login-1.jpg" alt="">
+                </div>
+            </div>
+            <div class="col-lg-6 offset-lg-1">
+                <div class="welcome_text">
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                            <mat-card-title>Login</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <form class="example-form">
+                                <table class="example-full-width" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <mat-form-field class="example-full-width">
+                                                <input matInput placeholder="Username" [(ngModel)]="username"
+                                                       name="username" required>
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <mat-form-field class="example-full-width">
+                                                <input matInput placeholder="Password" [(ngModel)]="password"
+                                                       type="password" name="password" required>
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                            <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-raised-button (click)="login()" color="primary">Login</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Welcome Area =================-->
+        
