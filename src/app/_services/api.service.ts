@@ -12,7 +12,7 @@ export class ApiService {
     }
 
     public getAllUsers() {
-        return this.http.get(API_URL + '/users');
+        return this.http.get(API_URL + '/user');
     }
 
     public register(user: User) {
