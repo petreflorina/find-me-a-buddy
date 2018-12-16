@@ -90,6 +90,11 @@ button:focus {
   padding-bottom: 120px;
 }
 
+.p_60 {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
 .pad_top {
   padding-top: 120px;
 }
