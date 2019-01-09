@@ -4,27 +4,39 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {first} from "rxjs/operators";
 
 import {ApiService} from "../_services/api.service";
+import {ModalService} from "../_services/modal.service";
 
-@Component({templateUrl: 'register.component.html'})
+@Component({
+    templateUrl: 'register.component.html',
+    styleUrls: ['hobbies.component.css']
+})
 export class RegisterComponent implements OnInit {
     registerForm: FormGroup;
     loading = false;
     submitted = false;
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private router: Router,
-        private apiService: ApiService) { }
+    constructor(private formBuilder: FormBuilder,
+                private router: Router,
+                private apiService: ApiService,
+                private modalService: ModalService) {
+    }
 
     ngOnInit() {
         this.registerForm = this.formBuilder.group({
+            firstName: ['', Validators.required],
+            lastName: ['', Validators.required],
             email: ['', Validators.required],
+            city: [''],
+            hobb: [''],
+            birthday: [''],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
     }
 
     // convenience getter for easy access to form fields
-    get f() { return this.registerForm.controls; }
+    get f() {
+        return this.registerForm.controls;
+    }
 
     onSubmit() {
         this.submitted = true;
@@ -45,5 +57,13 @@ export class RegisterComponent implements OnInit {
                     alert('Error');
                     this.loading = false;
                 });
+    }
+
+    openModal(id: string) {
+        this.modalService.open(id);
+    }
+
+    closeModal(id: string) {
+        this.modalService.close(id);
     }
 }

@@ -21,7 +21,7 @@ export class ApiService {
 
     // API: GET /users/:id
     public getUserById(userId: number) {
-        // will use this.http.get()
+        return this.http.get(API_URL + '/user/' + userId);
     }
 
     // API: PUT /users/:id
