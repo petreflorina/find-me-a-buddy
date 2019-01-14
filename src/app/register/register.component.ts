@@ -1,34 +1,42 @@
-import {Component, OnInit} from "@angular/core";
-import {Router} from "@angular/router";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {first} from "rxjs/operators";
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {first} from 'rxjs/operators';
 
-import {ApiService} from "../_services/api.service";
-import {ModalService} from "../_services/modal.service";
+import {ApiService} from '../_services/api.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    templateUrl: 'register.component.html',
-    styleUrls: ['hobbies.component.css']
+    templateUrl: 'register.component.html'
 })
 export class RegisterComponent implements OnInit {
     registerForm: FormGroup;
     loading = false;
     submitted = false;
-    model;
+    hobbies = [
+        {id: 1, link: 'assets/theme/img/hobbies/cycling.jpeg'},
+        {id: 2, link: 'assets/theme/img/hobbies/photo.jpeg'},
+        {id: 3, link: 'assets/theme/img/hobbies/golf.jpeg'},
+        {id: 4, link: 'assets/theme/img/hobbies/basket.jpeg'}
+    ];
+
 
     constructor(private formBuilder: FormBuilder,
                 private router: Router,
                 private apiService: ApiService,
-                private modalService: ModalService) {
+                private modalService: NgbModal) {
     }
 
     ngOnInit() {
+        const controls = this.hobbies.map(c => new FormControl(null));
+
         this.registerForm = this.formBuilder.group({
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
             email: ['', Validators.required],
             city: [''],
-            hobb: [''],
+            country: [''],
+            hobbies: new FormArray(controls),
             birthday: [''],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
@@ -37,6 +45,20 @@ export class RegisterComponent implements OnInit {
     // convenience getter for easy access to form fields
     get f() {
         return this.registerForm.controls;
+    }
+
+    open(content) {
+        this.modalService.open(content, {size: 'lg'});
+    }
+
+    checkboxChange(event, i) {
+        const hobbiesControls = this.getControls(this.registerForm, 'hobbies');
+        if (event.target.checked)
+            hobbiesControls[i].setValue(this.hobbies[i].id);
+    }
+
+    getControls(frmGrp: FormGroup, key: string) {
+        return (<FormArray>frmGrp.controls[key]).controls;
     }
 
     onSubmit() {
@@ -58,13 +80,5 @@ export class RegisterComponent implements OnInit {
                     alert('Error');
                     this.loading = false;
                 });
-    }
-
-    openModal(id: string) {
-        this.modalService.open(id);
-    }
-
-    closeModal(id: string) {
-        this.modalService.close(id);
     }
 }
