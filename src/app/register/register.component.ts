@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
-import {first} from 'rxjs/operators';
+import {Component, OnInit} from "@angular/core";
+import {Router} from "@angular/router";
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {first} from "rxjs/operators";
 
-import {ApiService} from '../_services/api.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ApiService} from "../_services/api.service";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
     templateUrl: 'register.component.html'
@@ -13,11 +13,19 @@ export class RegisterComponent implements OnInit {
     registerForm: FormGroup;
     loading = false;
     submitted = false;
+    length = 0;
+    selectedHobbies = [];
+    nrHobbies = 5;
+    hobbiesControls: any;
+    save = false;
+    invalidHobbies = false;
     hobbies = [
         {id: 1, link: 'assets/theme/img/hobbies/cycling.jpeg'},
         {id: 2, link: 'assets/theme/img/hobbies/photo.jpeg'},
         {id: 3, link: 'assets/theme/img/hobbies/golf.jpeg'},
-        {id: 4, link: 'assets/theme/img/hobbies/basket.jpeg'}
+        {id: 4, link: 'assets/theme/img/hobbies/basket.jpeg'},
+        {id: 5, link: 'assets/theme/img/hobbies/basket.jpeg'},
+        {id: 6, link: 'assets/theme/img/hobbies/basket.jpeg'}
     ];
 
 
@@ -52,22 +60,46 @@ export class RegisterComponent implements OnInit {
     }
 
     checkboxChange(event, i) {
-        const hobbiesControls = this.getControls(this.registerForm, 'hobbies');
-        if (event.target.checked)
-            hobbiesControls[i].setValue(this.hobbies[i].id);
+        this.hobbiesControls = this.getControls(this.registerForm, 'hobbies');
+        let hobbyId = this.hobbies[i].id;
+        if (event.target.checked) {
+            this.hobbiesControls[i].setValue(hobbyId);
+            if (!this.selectedHobbies.some((item) => item == hobbyId)) {
+                this.selectedHobbies.push(hobbyId);
+            }
+        } else {
+            if (this.selectedHobbies.some((item) => item == hobbyId)) {
+                let index = this.selectedHobbies.indexOf(hobbyId);
+                this.selectedHobbies.splice(index, 1);
+            }
+        }
     }
 
     getControls(frmGrp: FormGroup, key: string) {
         return (<FormArray>frmGrp.controls[key]).controls;
     }
 
+    saveModal() {
+        this.save = true;
+        this.invalidHobbies = true;
+        if (this.selectedHobbies.length == this.nrHobbies) {
+            this.modalService.dismissAll('Save click');
+            this.invalidHobbies = false;
+        }
+    }
+
     onSubmit() {
         this.submitted = true;
 
-        // stop here if form is invalid
-        if (this.registerForm.invalid) {
+        if (!(this.selectedHobbies.length == this.nrHobbies)) {
+            this.invalidHobbies = true;
             return;
         }
+
+        // stop here if form is invalid
+            if (this.registerForm.invalid) {
+                return;
+            }
 
         this.loading = true;
         this.apiService.register(this.registerForm.value)

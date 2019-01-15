@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   // apiUrl: 'http://localhost:3000'
-  apiUrl: 'http://findmeabuddy-env.mrwedymb2j.eu-central-1.elasticbeanstalk.com'
+  apiUrl: 'https://find-me-a-buddy.herokuapp.com'
 };
 
 /*

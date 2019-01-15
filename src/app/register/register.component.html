@@ -91,15 +91,22 @@
                         </div>
                     </div>
                     <div class="form-group text-center">
-                        <button type="button" class="btn btn-lg btn-outline-primary" (click)="open(content)">Select Your
-                            Hobbies
+                        <button type="button" class="btn btn-lg" (click)="open(content)"
+                                [ngClass]="(invalidHobbies) ? 'btn-danger' : 'btn-outline-primary'">
+                            Select Your Hobbies
                         </button>
+                        <div *ngIf="!submitted && !save" class="form-control-feedback">
+                            Please select {{nrHobbies}} hobbies
+                        </div>
+                        <div *ngIf="invalidHobbies" class="form-control-feedback">
+                            <div class="text-danger">{{nrHobbies}} hobbies should be selected</div>
+                        </div>
                     </div>
 
                     <!--START MODAL-->
                     <ng-template #content let-modal>
                         <div class="modal-header">
-                            <h4 class="modal-title" id="modal-basic-title">Please Select 5 hobbies</h4>
+                            <h4 class="modal-title" [ngClass]="{'text-danger' : invalidHobbies}" id="modal-basic-title">Please Select 5 hobbies</h4>
                             <button type="button" class="close" aria-label="Close"
                                     (click)="modal.dismiss('Cross click')">
                                 <span aria-hidden="true">&times;</span>
@@ -118,7 +125,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">
+                            <button type="button" class="btn btn-outline-dark" (click)="saveModal()">
                                 Save
                             </button>
                         </div>
@@ -138,5 +145,3 @@
     </div>
 </div>
 <!--=================================-->
-
-        
