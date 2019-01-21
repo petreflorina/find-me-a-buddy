@@ -20,9 +20,12 @@ export class ApiService {
     }
 
     // API: GET /users/:id
-    public getUserById(userId: number) {
-        return this.http.get(API_URL + '/user/' + userId);
+    public getUser(userId: number) {
+        return this.http.get(API_URL + '/user/profile');
     }
+
+    //https://find-me-a-buddy.herokuapp.com/info/country
+//https://find-me-a-buddy.herokuapp.com/info/country/175/city
 
     // API: PUT /users/:id
     public updateUser(user: User) {

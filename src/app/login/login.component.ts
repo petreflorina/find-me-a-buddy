@@ -4,12 +4,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import {AuthenticationService} from "../_services/authentication.service";
 
+
 @Component({templateUrl: 'login.component.html'})
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     loading = false;
     submitted = false;
     returnUrl: string;
+    error = '';
 
     constructor(
         private formBuilder: FormBuilder,
@@ -21,7 +23,7 @@ export class LoginComponent implements OnInit {
         this.loginForm = this.formBuilder.group({
             email: ['', Validators.required],
             password: ['', Validators.required]
-        })
+        });
 
         // reset login status
         this.authenticationService.logout();
@@ -49,7 +51,7 @@ export class LoginComponent implements OnInit {
                     this.router.navigate([this.returnUrl]);
                 },
                 error => {
-                    alert('Error');
+                    this.error = error;
                     this.loading = false;
                 });
     }

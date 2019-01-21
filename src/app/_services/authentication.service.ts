@@ -22,6 +22,11 @@ export class AuthenticationService {
             }));
     }
 
+    isLoggedIn() {
+        let storage = localStorage.getItem('currentUser');
+        return storage ? (JSON.parse(storage).token != null) : false;
+    }
+
     logout() {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');

@@ -17,12 +17,10 @@ export class UserComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.id = this.route.snapshot.params.id;
-        this.getUser(this.id);
+        this.getUser();
     }
 
-    public  getUser(id) {
-        console.log(id);
+    public  getUser() {
         // this.apiService.getUserById(id).subscribe((data: User) => {
         //     this.user = data;
         // });

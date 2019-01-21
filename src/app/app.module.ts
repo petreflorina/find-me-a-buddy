@@ -10,13 +10,15 @@ import {CustomMaterialModule} from "./material.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RegisterComponent} from "./register/register.component";
 import {UsersComponent} from "./users/users.component";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {ApiService} from "./_services/api.service";
 import {AuthenticationService} from "./_services/authentication.service";
 import {UserComponent} from "./users/user.component";
 import {FinderComponent} from "./find/finder.component";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {MDBBootstrapModule} from "angular-bootstrap-md";
+import {ErrorInterceptor} from "./_helpers/error.interceptor";
+import {JwtInterceptor} from "./_helpers/jwt.interceptor";
 
 @NgModule({
     declarations: [
@@ -41,10 +43,10 @@ import {MDBBootstrapModule} from "angular-bootstrap-md";
     ],
     providers: [
         ApiService,
-        AuthenticationService
+        AuthenticationService,
 
-        // provider used to create fake backend
-        // fakeBackendProvider
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
     ],
     bootstrap: [AppComponent]
 })
