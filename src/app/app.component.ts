@@ -10,4 +10,8 @@ export class AppComponent {
 
   constructor(public authService: AuthenticationService) {
   }
+
+  public logout() {
+    this.authService.logout();
+  }
 }

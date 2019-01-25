@@ -19,13 +19,17 @@ export class ApiService {
         return this.http.post(API_URL + '/user/register', user);
     }
 
-    // API: GET /users/:id
-    public getUser(userId: number) {
+    public getUser() {
         return this.http.get(API_URL + '/user/profile');
     }
 
-    //https://find-me-a-buddy.herokuapp.com/info/country
-//https://find-me-a-buddy.herokuapp.com/info/country/175/city
+    public getCountries() {
+        return this.http.get(API_URL + '/info/country');
+    }
+
+    public getCities(countryId: number) {
+        return this.http.get(API_URL + '/info/country/' + countryId + '/city');
+    }
 
     // API: PUT /users/:id
     public updateUser(user: User) {

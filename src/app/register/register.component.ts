@@ -5,6 +5,8 @@ import {first} from "rxjs/operators";
 
 import {ApiService} from "../_services/api.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {Country} from "../_models/countries";
+import {City} from "../_models/city";
 
 @Component({
     templateUrl: 'register.component.html'
@@ -19,6 +21,12 @@ export class RegisterComponent implements OnInit {
     hobbiesControls: any;
     save = false;
     invalidHobbies = false;
+    countries: Array<Country> = [];
+    cities: Array<City> = [];
+    country: {
+        countryId: 1;
+    };
+    city: {};
     hobbies = [
         {id: 1, link: 'assets/theme/img/hobbies/cycling.jpeg'},
         {id: 2, link: 'assets/theme/img/hobbies/photo.jpeg'},
@@ -48,6 +56,20 @@ export class RegisterComponent implements OnInit {
             birthday: [''],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
+
+        this.getCountry();
+    }
+
+    public getCountry() {
+        this.apiService.getCountries().subscribe((response: Array<Country>) => {
+            this.countries = response;
+        });
+    }
+
+    public getCities(countryId) {
+        this.apiService.getCities(countryId).subscribe((response: Array<City>) => {
+            this.cities = response;
+        });
     }
 
     // convenience getter for easy access to form fields
@@ -57,6 +79,12 @@ export class RegisterComponent implements OnInit {
 
     open(content) {
         this.modalService.open(content, {size: 'lg'});
+    }
+
+    setCities() {
+        if (this.country) {
+            this.getCities(this.country.countryId);
+        }
     }
 
     checkboxChange(event, i) {
@@ -97,9 +125,9 @@ export class RegisterComponent implements OnInit {
         }
 
         // stop here if form is invalid
-            if (this.registerForm.invalid) {
-                return;
-            }
+        if (this.registerForm.invalid) {
+            return;
+        }
 
         this.loading = true;
         this.apiService.register(this.registerForm.value)
