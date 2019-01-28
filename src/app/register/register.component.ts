@@ -1,12 +1,14 @@
 import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {first} from "rxjs/operators";
 
 import {ApiService} from "../_services/api.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Country} from "../_models/countries";
 import {City} from "../_models/city";
+import {Hobby} from "../_models/hobby";
+import {IMyDpOptions} from "mydatepicker";
 
 @Component({
     templateUrl: 'register.component.html'
@@ -18,7 +20,7 @@ export class RegisterComponent implements OnInit {
     length = 0;
     selectedHobbies = [];
     nrHobbies = 5;
-    hobbiesControls: any;
+    controls: any;
     save = false;
     invalidHobbies = false;
     countries: Array<Country> = [];
@@ -27,14 +29,11 @@ export class RegisterComponent implements OnInit {
         countryId: 1;
     };
     city: {};
-    hobbies = [
-        {id: 1, link: 'assets/theme/img/hobbies/cycling.jpeg'},
-        {id: 2, link: 'assets/theme/img/hobbies/photo.jpeg'},
-        {id: 3, link: 'assets/theme/img/hobbies/golf.jpeg'},
-        {id: 4, link: 'assets/theme/img/hobbies/basket.jpeg'},
-        {id: 5, link: 'assets/theme/img/hobbies/basket.jpeg'},
-        {id: 6, link: 'assets/theme/img/hobbies/basket.jpeg'}
-    ];
+    hobbies: Array<Hobby> = [];
+    public myDatePickerOptions: IMyDpOptions = {
+        // other options...
+        dateFormat: 'yyyy-mm-dd',
+    };
 
 
     constructor(private formBuilder: FormBuilder,
@@ -44,20 +43,57 @@ export class RegisterComponent implements OnInit {
     }
 
     ngOnInit() {
-        const controls = this.hobbies.map(c => new FormControl(null));
 
         this.registerForm = this.formBuilder.group({
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
             email: ['', Validators.required],
-            city: [''],
-            country: [''],
-            hobbies: new FormArray(controls),
-            birthday: [''],
-            password: ['', [Validators.required, Validators.minLength(6)]]
+            password: ['', [Validators.required, Validators.minLength(6)]],
+            profile: this.formBuilder.group({
+                firstName: ['', Validators.required],
+                lastName: ['', Validators.required],
+                birthday: null,
+                gender: [''],
+                city: [''],
+                country: [''],
+                hobbies: this.formBuilder.array([])
+            })
         });
 
         this.getCountry();
+        this.getHobbies();
+    }
+
+    formatDate(value) {
+        this.p['birthday'].setValue(<string>value.formatted);
+    }
+
+    formatCity(value) {
+        this.p['city'].setValue({cityId: value.cityId});
+    }
+
+    formatCountry(value) {
+        this.p['country'].setValue({countryId: value.countryId});
+    }
+
+    initHobby(hobbyId) {
+        return this.formBuilder.group({
+            hobbyId: [hobbyId]
+        });
+    }
+
+    addHobby(hobbyId) {
+        const control = <FormArray>this.registerForm['controls'].profile['controls'].hobbies;
+        const hobbyCtrl = this.initHobby(hobbyId);
+        control.push(hobbyCtrl);
+    }
+
+    removeHobby(hobbyId) {
+        const control = <FormArray>this.registerForm['controls'].profile['controls'].hobbies;
+        control['controls'].forEach((value, index) => {
+            let hobbyGroup = <FormGroup>value;
+            if (hobbyGroup.get('hobbyId').value == hobbyId) {
+                control.removeAt(index);
+            }
+        });
     }
 
     public getCountry() {
@@ -72,9 +108,19 @@ export class RegisterComponent implements OnInit {
         });
     }
 
+    public getHobbies() {
+        this.apiService.getHobbies().subscribe((response: Array<Hobby>) => {
+            this.hobbies = response;
+        });
+    }
+
     // convenience getter for easy access to form fields
     get f() {
         return this.registerForm.controls;
+    }
+
+    get p() {
+        return this.f['profile']['controls'];
     }
 
     open(content) {
@@ -87,24 +133,19 @@ export class RegisterComponent implements OnInit {
         }
     }
 
-    checkboxChange(event, i) {
-        this.hobbiesControls = this.getControls(this.registerForm, 'hobbies');
-        let hobbyId = this.hobbies[i].id;
+    checkboxChange(event, hobbyId) {
         if (event.target.checked) {
-            this.hobbiesControls[i].setValue(hobbyId);
             if (!this.selectedHobbies.some((item) => item == hobbyId)) {
                 this.selectedHobbies.push(hobbyId);
+                this.addHobby(hobbyId);
             }
         } else {
             if (this.selectedHobbies.some((item) => item == hobbyId)) {
+                this.removeHobby(hobbyId);
                 let index = this.selectedHobbies.indexOf(hobbyId);
                 this.selectedHobbies.splice(index, 1);
             }
         }
-    }
-
-    getControls(frmGrp: FormGroup, key: string) {
-        return (<FormArray>frmGrp.controls[key]).controls;
     }
 
     saveModal() {
@@ -124,8 +165,20 @@ export class RegisterComponent implements OnInit {
             return;
         }
 
+
+        if (this.p['birthday'].value) {
+            this.formatDate(this.p['birthday'].value);
+        }
+        if (this.p['city'].value) {
+            this.formatCity(this.p['city'].value);
+        }
+        if (this.p['country'].value) {
+            this.formatCountry(this.p['country'].value);
+        }
+
         // stop here if form is invalid
         if (this.registerForm.invalid) {
+            console.warn('Form invalid');
             return;
         }
 

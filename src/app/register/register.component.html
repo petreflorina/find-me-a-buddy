@@ -25,51 +25,6 @@
             <div class="welcome_text">
                 <h2>Register</h2>
                 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label for="firstName">First Name</label>
-                            <input type="text" formControlName="firstName" class="form-control"
-                                   [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }"/>
-                            <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
-                                <div *ngIf="f.firstName.errors.required">First Name is required</div>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="lastName">Last Name</label>
-                            <input type="text" formControlName="lastName" class="form-control"
-                                   [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }"/>
-                            <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
-                                <div *ngIf="f.lastName.errors.required">Last Name is required</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label for="ngbDatepicker">Birthday</label>
-                            <div class="input-group">
-                                <input class="form-control" placeholder="yyyy-mm-dd" formControlName="birthday"
-                                       name="dp" ngbDatepicker #d="ngbDatepicker">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary calendar" (click)="d.toggle()"
-                                            type="button"><i class="fa fa-calendar"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label for="country">Country</label>
-                            <select  [(ngModel)]="country" class="form-control" formControlName="country" (change)="setCities()">
-                                <option [ngValue]="country" *ngFor="let country of countries">{{country.name}}</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="city">City</label>
-                            <select [(ngModel)]="city" class="form-control" formControlName="city">
-                                <option [ngValue]="city" *ngFor="let city of cities">{{city.name}}</option>
-                            </select>
-                        </div>
-                    </div>
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="text" formControlName="email" class="form-control"
@@ -87,48 +42,118 @@
                             <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
                         </div>
                     </div>
-                    <div class="form-group text-center">
-                        <button type="button" class="btn btn-lg" (click)="open(content)"
-                                [ngClass]="(invalidHobbies) ? 'btn-danger' : 'btn-outline-primary'">
-                            Select Your Hobbies
-                        </button>
-                        <div *ngIf="!submitted && !save" class="form-control-feedback">
-                            Please select {{nrHobbies}} hobbies
-                        </div>
-                        <div *ngIf="invalidHobbies" class="form-control-feedback">
-                            <div class="text-danger">{{nrHobbies}} hobbies should be selected</div>
-                        </div>
-                    </div>
-
-                    <!--START MODAL-->
-                    <ng-template #content let-modal>
-                        <div class="modal-header">
-                            <h4 class="modal-title" [ngClass]="{'text-danger' : invalidHobbies}" id="modal-basic-title">Please Select 5 hobbies</h4>
-                            <button type="button" class="close" aria-label="Close"
-                                    (click)="modal.dismiss('Cross click')">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body pre-scrollable">
-                            <div class="row">
-                                <div formArrayName="hobbies" class="form-check col-md-3"
-                                     *ngFor="let hobby of registerForm.controls.hobbies.controls; let i = index">
-                                    <input type="checkbox" class="form-check-input" [formControlName]="i" id="i"
-                                           (change)="checkboxChange($event, i)">
-                                    <label class="form-check-label" for="i">
-                                    </label>
-                                    <img src="{{hobbies[i].link}}">
+                    <div formGroupName="profile">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="firstName">First Name</label>
+                                <input type="text" formControlName="firstName" class="form-control"
+                                       [ngClass]="{ 'is-invalid': submitted && p.firstName.errors }"/>
+                                <div *ngIf="submitted && p.firstName.errors" class="invalid-feedback">
+                                    <div *ngIf="p.firstName.errors.required">First Name is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" formControlName="lastName" class="form-control"
+                                       [ngClass]="{ 'is-invalid': submitted && p.lastName.errors }"/>
+                                <div *ngIf="submitted && p.lastName.errors" class="invalid-feedback">
+                                    <div *ngIf="p.lastName.errors.required">Last Name is required</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-dark" (click)="saveModal()">
-                                Save
-                            </button>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="datepicker">Birthday</label>
+                                <!--<div class="input-group">-->
+                                <!--<input class="form-control" placeholder="yyyy-mm-dd" formControlName="birthday"-->
+                                <!--(ngModelChange)="onSelectDate($event)" name="dp" ngbDatepicker #d="ngbDatepicker">-->
+                                <!--<div class="input-group-append">-->
+                                <!--<button class="btn btn-outline-secondary calendar" (click)="d.toggle()"-->
+                                <!--type="button"><i class="fa fa-calendar"></i></button>-->
+                                <!--</div>-->
+                                <!--</div>-->
+                                <my-date-picker name="mydate" formControlName="birthday"
+                                                id="datepicker" [options]="myDatePickerOptions"></my-date-picker>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="gender">Gender</label>
+                                <select class="form-control" id="gender" formControlName="gender">
+                                    <option value="m">Male</option>
+                                    <option value="f">Female</option>
+                                </select>
+                            </div>
                         </div>
-                    </ng-template>
-                    <!--END MODAL-->
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="country">Country</label>
+                                <select [(ngModel)]="country" class="form-control" formControlName="country"
+                                        (change)="setCities()">
+                                    <option [ngValue]="country" *ngFor="let country of countries">{{country.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="city">City</label>
+                                <select [(ngModel)]="city" class="form-control" formControlName="city">
+                                    <option [ngValue]="city" *ngFor="let city of cities">{{city.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="button" class="btn btn-lg" (click)="open(content)"
+                                    [ngClass]="(invalidHobbies) ? 'btn-danger' : 'btn-outline-primary'">
+                                Select Your Hobbies
+                            </button>
+                            <div *ngIf="!submitted && !save" class="form-control-feedback">
+                                Please select {{nrHobbies}} hobbies
+                            </div>
+                            <div *ngIf="invalidHobbies" class="form-control-feedback">
+                                <div class="text-danger">{{nrHobbies}} hobbies should be selected</div>
+                            </div>
+                        </div>
 
+                        <!--START MODAL-->
+                        <ng-template #content let-modal>
+                            <div class="modal-header">
+                                <h4 class="modal-title" [ngClass]="{'text-danger' : invalidHobbies}"
+                                    id="modal-basic-title">Please Select 5 hobbies</h4>
+                                <button type="button" class="close" aria-label="Close"
+                                        (click)="modal.dismiss('Cross click')">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body pre-scrollable">
+                                <!--<div class="row">-->
+                                <!--<div formArrayName="hobbies" class="form-check col-md-3"-->
+                                <!--*ngFor="let hobby of registerForm.controls.hobbies.controls; let i = index">-->
+                                <!--<input type="checkbox" class="form-check-input" [formControlName]="i" id="i"-->
+                                <!--(change)="checkboxChange($event, i)">-->
+                                <!--<label class="form-check-label" for="i">-->
+                                <!--</label>-->
+                                <!--<img src="{{hobbies[i].link}}">-->
+                                <!--</div>-->
+                                <!--</div>-->
+                                <div class="row">
+                                    <div formArrayName="hobbies" class="form-check col-md-3"
+                                         *ngFor="let hobby of hobbies">
+                                        <input type="checkbox" class="form-check-input"
+                                               name="checkbox-list" id="check_{{hobby.hobbyId}}"
+                                               (change)="checkboxChange($event, hobby.hobbyId)">
+                                        <label class="form-check-label" for="check_{{hobby.hobbyId}}">
+                                            <img class="img-responsive img-thumbnail"
+                                                 src="assets/theme/img/hobbies/{{hobby.hobbyId}}.jpeg">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-dark" (click)="saveModal()">
+                                    Save
+                                </button>
+                            </div>
+                        </ng-template>
+                        <!--END MODAL-->
+                    </div>
                     <div class="form-group">
                         <button [disabled]="loading" type="submit" class="btn btn-primary">Register</button>
                         <img *ngIf="loading"

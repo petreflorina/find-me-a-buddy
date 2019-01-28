@@ -31,7 +31,7 @@
                 </ul>
             </div>
             <div>
-                <ul><li>Hi, <!--{{user.firstName}}--></li></ul>
+                <ul><li *ngIf="authService.isLoggedIn()">Hi, <!--{{user.firstName}}--></li></ul>
             </div>
         </div>
     </nav>

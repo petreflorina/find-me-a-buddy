@@ -20,7 +20,11 @@ export class ApiService {
     }
 
     public getUser() {
-        return this.http.get(API_URL + '/user/profile');
+        return this.http.get(API_URL + '/user/account');
+    }
+
+    public getHobbies() {
+        return this.http.get(API_URL + '/info/hobby');
     }
 
     public getCountries() {

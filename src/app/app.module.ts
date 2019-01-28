@@ -19,6 +19,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {MDBBootstrapModule} from "angular-bootstrap-md";
 import {ErrorInterceptor} from "./_helpers/error.interceptor";
 import {JwtInterceptor} from "./_helpers/jwt.interceptor";
+import {MyDatePickerModule} from "mydatepicker";
 
 @NgModule({
     declarations: [
@@ -39,6 +40,7 @@ import {JwtInterceptor} from "./_helpers/jwt.interceptor";
         FormsModule,
         ReactiveFormsModule,
         NgbModule,
+        MyDatePickerModule,
         MDBBootstrapModule.forRoot()
     ],
     providers: [
