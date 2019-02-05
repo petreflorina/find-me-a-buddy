@@ -28,21 +28,14 @@ export class ApiService {
     }
 
     public getCountries() {
-        return this.http.get(API_URL + '/info/country');
+        return this.http.get(API_URL + '/user/match');
     }
 
     public getCities(countryId: number) {
         return this.http.get(API_URL + '/info/country/' + countryId + '/city');
     }
 
-    // API: PUT /users/:id
-    public updateUser(user: User) {
-        // will use this.http.put()
+    public getMatch(params) {
+        return this.http.get(API_URL + '/user/match', {params: params});
     }
-
-    // DELETE /users/:id
-    public deleteUserById(userId: number) {
-        // will use this.http.delete()
-    }
-
 }

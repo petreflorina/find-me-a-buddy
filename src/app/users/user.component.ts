@@ -21,12 +21,13 @@ export class UserComponent implements OnInit {
     }
 
     public  getUser() {
-        // this.apiService.getUserById(id).subscribe((data: User) => {
-        //     this.user = data;
-        // });
+        this.apiService.getUser().subscribe((data: User) => {
+            console.log(data);
+        });
         this.user = new User();
         this.user.lastName = 'Petre';
         this.user.firstName = 'Florina';
         this.user.email = 'pflo@gmail.com';
+        this.user.birthday = '11-05-1996';
     }
 }

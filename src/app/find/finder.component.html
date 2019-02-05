@@ -23,9 +23,11 @@
                       [showNavigationIndicators]="showNavigationIndicators">
             <ng-template ngbSlide *ngFor="let image of images">
                 <div class="text-center">
-                    <img [src]="image" alt="Random slide">
+                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="img-responsive img-circle" width="327px" height="327px"
+                         alt="avatar">
+
                     <div class="carousel-caption">
-                        <h3>No mouse navigation</h3>
+                        <!--<h3>{{user.firstName + ' ' + user.lastName + ', ' + user.birthday}}</h3>-->
                         <p>This carousel hides navigation arrows and indicators.</p>
                     </div>
                 </div>
