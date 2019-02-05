@@ -148,6 +148,10 @@ export class RegisterComponent implements OnInit {
         }
     }
 
+    checkInput(hobbyId) {
+        return this.selectedHobbies.includes(hobbyId);
+    }
+
     saveModal() {
         this.save = true;
         this.invalidHobbies = true;

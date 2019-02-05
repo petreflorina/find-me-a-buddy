@@ -138,6 +138,7 @@
                                          *ngFor="let hobby of hobbies">
                                         <input type="checkbox" class="form-check-input"
                                                name="checkbox-list" id="check_{{hobby.hobbyId}}"
+                                               [checked]="checkInput(hobby.hobbyId)"
                                                (change)="checkboxChange($event, hobby.hobbyId)">
                                         <label class="form-check-label" for="check_{{hobby.hobbyId}}">
                                             <img class="img-responsive img-thumbnail"
