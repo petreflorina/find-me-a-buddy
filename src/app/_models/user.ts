@@ -1,10 +1,11 @@
+import {Profile} from "./profile";
 export class User {
     accountId: number;
     email: string = '';
-    firstName: string = '';
-    lastName: string = '';
-    gender: string = '';
-    birthday: string = '';
+    createdAt: string = '';
+    updatedAt: string = '';
+    role: string = '';
+    profile: Profile;
 
     constructor(values: Object = {}) {
         Object.assign(this, values);

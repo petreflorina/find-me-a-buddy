@@ -1,8 +1,8 @@
 export class City {
     cityId: number;
     regionId: number;
-    latitude: string;
-    longitude: string;
+    latitude: number;
+    longitude: number;
     name: string;
 
     constructor(values: Object = {}) {

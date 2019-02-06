@@ -20,7 +20,7 @@
 <section>
 <div class="container py-5">
     <div class="row">
-        <div class="welcome_text col-sm-10"><h1>{{ user.firstName + ' ' + user.lastName }}</h1></div>
+        <div class="welcome_text col-sm-10"><h1>{{ user?.profile.firstName + ' ' + user?.profile.lastName }}</h1></div>
     </div>
     <div class="row">
         <div class="col-sm-3"><!--left col-->
@@ -50,25 +50,25 @@
                                     <tbody>
                                     <tr>
                                         <td>First Name</td>
-                                        <td>{{user.firstName}}</td>
+                                        <td>{{user?.profile.firstName}}</td>
                                     </tr>
                                     <tr>
                                         <td>Last Name</td>
-                                        <td>{{user.lastName}}</td>
+                                        <td>{{user?.profile.lastName}}</td>
                                     </tr>
                                     <tr>
                                         <td>Date of Birth</td>
-                                        <td>{{user.birthday}}</td>
+                                        <td>{{user?.profile.birthday}}</td>
                                     </tr>
 
                                     <tr>
                                     <tr>
                                         <td>Gender</td>
-                                        <td>Female</td>
+                                        <td>{{user?.profile.gender}}</td>
                                     </tr>
                                     <tr>
                                         <td>Email</td>
-                                        <td><a href="mailto:{{user.email}}">{{user.email}}</a></td>
+                                        <td><a href="mailto:{{user?.email}}">{{user?.email}}</a></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -79,20 +79,11 @@
                 <div class="tab-pane fade" id="hobbies" role="tabpanel" aria-labelledby="hobbies-tab">
                     <div class="container py-2">
                     <div class="row d-flex pt-1">
-                        <div class="col-md-6 col-lg-4 item d-flex">
-                            <a class="lightbox">
-                                <img class="img-fluid image scale-on-hover" src="assets/theme/img/hobbies/1.jpeg">
-                            </a>
-                        </div>
-                        <div class="col-md-6 col-lg-4 item d-flex">
-                            <a class="lightbox">
-                                <img class="img-fluid image scale-on-hover" src="assets/theme/img/hobbies/2.jpeg">
-                            </a>
-                        </div>
-                        <div class="col-md-6 col-lg-4 item d-flex">
-                            <a class="lightbox">
-                                <img class="img-fluid image scale-on-hover" src="assets/theme/img/hobbies/3.jpeg">
-                            </a>
+                        <div class="row">
+                            <div class="form-check col-md-3" *ngFor="let hobby of user?.profile.hobbies">
+                                    <img class="img-responsive img-thumbnail"
+                                         src="assets/theme/img/hobbies/{{hobby.hobbyId}}.jpeg">
+                            </div>
                         </div>
                     </div>
                 </div>

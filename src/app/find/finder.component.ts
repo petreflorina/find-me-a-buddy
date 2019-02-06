@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {NgbCarouselConfig} from '@ng-bootstrap/ng-bootstrap';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {Component, OnInit} from "@angular/core";
+import {NgbCarouselConfig} from "@ng-bootstrap/ng-bootstrap";
+import {HttpParams} from "@angular/common/http";
 import {ApiService} from "../_services/api.service";
-import {User} from "../_models/user";
+import {Account} from "../_models/account";
 
 @Component({
     templateUrl: 'finder.component.html',
@@ -11,13 +11,15 @@ import {User} from "../_models/user";
 export class FinderComponent implements OnInit {
     showNavigationArrows = false;
     showNavigationIndicators = false;
-    images = [1, 2, 3].map(() => `https://picsum.photos/900/500?random&t=${Math.random()}`);
-    users: Array<User>;
+    users: Array<Account>;
+    loading = true;
+    showEmail = false;
 
     constructor(config: NgbCarouselConfig, private apiService: ApiService) {
         // customize default values of carousels used by this component tree
         config.showNavigationArrows = true;
         config.showNavigationIndicators = true;
+        config.interval = 0;
     }
 
     ngOnInit() {
@@ -25,9 +27,19 @@ export class FinderComponent implements OnInit {
     }
 
     public getMatch() {
-        let params = new HttpParams().set('locationOffset', '0.1');
-        this.apiService.getMatch(params).subscribe(response => {
-            console.log(response);
+        let params = new HttpParams().set('locationOffset', '0.5').set('maxUsers', '10');
+        this.apiService.getMatch(params).subscribe((response: Array<Account>) => {
+            this.users = response;
+            this.loading = false;
+            console.log(this.users);
         });
+    }
+
+    public email() {
+        this.showEmail = true;
+    }
+
+    public onSlide() {
+        this.showEmail = false;
     }
 }

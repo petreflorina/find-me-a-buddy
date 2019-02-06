@@ -23,6 +23,10 @@ export class ApiService {
         return this.http.get(API_URL + '/user/account');
     }
 
+    public getUserById(id) {
+        return this.http.get(API_URL + '/user/account/' + id);
+    }
+
     public getHobbies() {
         return this.http.get(API_URL + '/info/hobby');
     }

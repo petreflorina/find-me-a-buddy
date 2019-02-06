@@ -19,16 +19,46 @@
 <!--================Welcome Area =================-->
 <section>
     <div class="container center">
-        <ngb-carousel *ngIf="images" [showNavigationArrows]="showNavigationArrows"
-                      [showNavigationIndicators]="showNavigationIndicators">
-            <ng-template ngbSlide *ngFor="let image of images">
+        <img *ngIf="loading" class="text-center" width="30px" height="30px"
+             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+        <ngb-carousel *ngIf="users" [showNavigationArrows]="showNavigationArrows"
+                      [showNavigationIndicators]="showNavigationIndicators"
+                        [interval]="interval"
+                      (slide)="onSlide()">
+            <ng-template ngbSlide *ngFor="let user of users">
                 <div class="text-center">
-                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="img-responsive img-circle" width="327px" height="327px"
-                         alt="avatar">
-
-                    <div class="carousel-caption">
-                        <!--<h3>{{user.firstName + ' ' + user.lastName + ', ' + user.birthday}}</h3>-->
-                        <p>This carousel hides navigation arrows and indicators.</p>
+                    <div>
+                        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="img-responsive img-circle"
+                             width="327px" height="327px"
+                             alt="avatar">
+                        <div>
+                            <h3>It's a {{user.matchScore | number: '1.0-0'}} % match</h3>
+                            <button *ngIf="!showEmail" (click)="email()" type="button" class="btn btn-primary">Show Email</button>
+                        </div>
+                    </div>
+                    <div class="panel-body py-2">
+                        <div class="row">
+                            <table class="table table-user-information">
+                                <tbody>
+                                <tr>
+                                    <td>First Name</td>
+                                    <td>{{user.account.profile.firstName}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Last Name</td>
+                                    <td>{{user.account.profile.lastName}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Birthday</td>
+                                    <td>{{user.account.profile.birthday}}</td>
+                                </tr>
+                                <tr *ngIf="showEmail">
+                                    <td>Email</td>
+                                    <td>{{user.account.email}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </ng-template>
