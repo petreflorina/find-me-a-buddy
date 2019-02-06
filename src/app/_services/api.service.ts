@@ -32,7 +32,7 @@ export class ApiService {
     }
 
     public getCountries() {
-        return this.http.get(API_URL + '/user/match');
+        return this.http.get(API_URL + '/info/country');
     }
 
     public getCities(countryId: number) {
