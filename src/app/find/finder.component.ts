@@ -14,6 +14,8 @@ export class FinderComponent implements OnInit {
     users: Array<Account>;
     loading = true;
     showEmail = false;
+    index = 0;
+    images;
 
     constructor(config: NgbCarouselConfig, private apiService: ApiService) {
         // customize default values of carousels used by this component tree
@@ -23,6 +25,7 @@ export class FinderComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.images = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(() => `https://randomuser.me/api/portraits/${this.getRandomUser(Math.floor(Math.random() * 10))}.jpg`);
         this.getMatch();
     }
 
@@ -30,8 +33,10 @@ export class FinderComponent implements OnInit {
         let params = new HttpParams().set('locationOffset', '0.5').set('maxUsers', '10');
         this.apiService.getMatch(params).subscribe((response: Array<Account>) => {
             this.users = response;
+            for (let user of this.users) {
+                user.photo = this.images[this.index++];
+            }
             this.loading = false;
-            console.log(this.users);
         });
     }
 
@@ -41,5 +46,17 @@ export class FinderComponent implements OnInit {
 
     public onSlide() {
         this.showEmail = false;
+    }
+
+    public getRandomUser(id) {
+        let randomUser = '';
+
+        let gender = ['men', 'women'];
+        let randomNumber = Math.floor(Math.random() * gender.length);
+        randomUser += gender[randomNumber] + '/';
+
+        randomUser += id.toString();
+        return randomUser;
+
     }
 }

@@ -19,21 +19,28 @@
 <!--================Welcome Area =================-->
 <section>
     <div class="container center">
-        <img *ngIf="loading" class="text-center" width="30px" height="30px"
-             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+        <div *ngIf="loading" class="text-center row">
+            <div class="d-flex align-items-center">
+                <strong>Loading...</strong>
+                <img class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+            </div>
+            </div>
         <ngb-carousel *ngIf="users" [showNavigationArrows]="showNavigationArrows"
                       [showNavigationIndicators]="showNavigationIndicators"
-                        [interval]="interval"
+                      [interval]="interval"
                       (slide)="onSlide()">
+            <div>
             <ng-template ngbSlide *ngFor="let user of users">
                 <div class="text-center">
                     <div>
-                        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="img-responsive img-circle"
-                             width="327px" height="327px"
+                        <img src="{{user.photo}}" class="img-responsive img-circle"
+                             width="300px" height="300px"
                              alt="avatar">
                         <div>
                             <h3>It's a {{user.matchScore | number: '1.0-0'}} % match</h3>
-                            <button *ngIf="!showEmail" (click)="email()" type="button" class="btn btn-primary">Show Email</button>
+                            <button *ngIf="!showEmail" (click)="email()" type="button" class="btn btn-primary">Show
+                                Email
+                            </button>
                         </div>
                     </div>
                     <div class="panel-body py-2">
@@ -54,7 +61,7 @@
                                 </tr>
                                 <tr *ngIf="showEmail">
                                     <td>Email</td>
-                                    <td>{{user.account.email}}</td>
+                                    <td><a href="mailto:{{user.account.email}}">{{user.account.email}}</a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -62,6 +69,7 @@
                     </div>
                 </div>
             </ng-template>
+            </div>
         </ngb-carousel>
     </div>
 </section>
